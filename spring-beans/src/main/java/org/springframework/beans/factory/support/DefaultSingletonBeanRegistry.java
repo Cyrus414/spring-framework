@@ -178,10 +178,20 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		/*
+		依次从singletonObjects、earlySingletonObjects、singletonFactories中获取beanName对应的bean实例
+		1. singletonObjects：存放已经创建好的bean实例（成品）
+		2. earlySingletonObjects：存放正在创建的bean实例（半成品）
+		3. singletonFactories：存放创建bean实例的工厂
+		 */
 		// Quick check for existing instance without full singleton lock
 		Object singletonObject = this.singletonObjects.get(beanName);
+
+		// 如果singletonObjects中没有beanName对应的bean实例，且这个bean正在创建中
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			singletonObject = this.earlySingletonObjects.get(beanName);
+
+			// 如果earlySingletonObjects中没有beanName对应的bean实例，且允许提前暴露bean实例
 			if (singletonObject == null && allowEarlyReference) {
 				synchronized (this.singletonObjects) {
 					// Consistent creation of early reference within full singleton lock
@@ -189,6 +199,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (singletonObject == null) {
 						singletonObject = this.earlySingletonObjects.get(beanName);
 						if (singletonObject == null) {
+
+							// 从singletonFactories中获取beanName对应的ObjectFactory，然后调用getObject()方法创建bean实例
 							ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 							if (singletonFactory != null) {
 								singletonObject = singletonFactory.getObject();
