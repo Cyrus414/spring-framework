@@ -637,6 +637,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				}
 			}
 			else {
+				// 解析字段值
 				value = resolveFieldValue(field, bean, beanName);
 			}
 			if (value != null) {

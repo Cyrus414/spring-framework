@@ -1,0 +1,13 @@
+@startuml
+
+AbstractAutowireCapableBeanFactory -> AutowiredAnnotationBeanPostProcessor: postProcessProperties()
+AutowiredAnnotationBeanPostProcessor -> AutowiredAnnotationBeanPostProcessor : inject()
+AutowiredAnnotationBeanPostProcessor -> AutowiredAnnotationBeanPostProcessor: resolveFieldValue()
+AutowiredAnnotationBeanPostProcessor -> DefaultListableBeanFactory: resolveDependency()
+DefaultListableBeanFactory -> DefaultListableBeanFactory: doResolveDependency()
+DefaultListableBeanFactory -> DefaultListableBeanFactory: DefaultListableBeanFactory()
+DefaultListableBeanFactory -> DependencyDescriptor: resolveCandidate()
+DependencyDescriptor -> DefaultListableBeanFactory: getBean()
+
+
+@enduml
