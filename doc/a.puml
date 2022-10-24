@@ -1,0 +1,33 @@
+@startuml
+activate AbstractApplicationContext
+AbstractApplicationContext -> AbstractApplicationContext: finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory)
+AbstractApplicationContext -> DefaultListableBeanFactory: preInstantiateSingletons()
+activate DefaultListableBeanFactory
+
+    loop beanDefinitionNames
+        DefaultListableBeanFactory -> AbstractBeanFactory: getBean(String name)
+        activate AbstractBeanFactory
+
+            AbstractBeanFactory -> AbstractBeanFactory: doGetBean(String name)
+            activate AbstractBeanFactory
+
+            AbstractBeanFactory -> DefaultListableBeanFactory: getSingleton()
+            activate DefaultListableBeanFactory
+                DefaultListableBeanFactory -> AbstractAutowireCapableBeanFactory: createBean()
+                activate AbstractAutowireCapableBeanFactory
+                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: doCreateBean()
+                    activate AbstractAutowireCapableBeanFactory
+                        AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: createBeanInstance()
+                        AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: instantiateBean()
+                    deactivate AbstractAutowireCapableBeanFactory
+                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: populateBean()
+                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: initializeBean()
+
+
+                DefaultListableBeanFactory -> AbstractBeanFactory: sharedInstance
+            deactivate DefaultListableBeanFactory
+
+            AbstractBeanFactory -> AbstractBeanFactory: getObjectForBeanInstance
+        deactivate AbstractBeanFactory
+    end
+@enduml
