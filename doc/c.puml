@@ -1,0 +1,43 @@
+@startuml
+
+DefaultListableBeanFactory -> AbstractBeanFactory: getBean(String name)
+activate AbstractBeanFactory
+    AbstractBeanFactory -> AbstractBeanFactory: doGetBean()
+    activate AbstractBeanFactory
+        AbstractBeanFactory -> DefaultSingletonBeanRegistry: getSingleton(String beanName)
+        activate DefaultSingletonBeanRegistry
+            DefaultSingletonBeanRegistry -> AbstractAutowireCapableBeanFactory: createBean()
+            activate AbstractAutowireCapableBeanFactory
+                AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: doCreateBean()
+                activate AbstractAutowireCapableBeanFactory
+                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: populateBean()
+                    activate AbstractAutowireCapableBeanFactory
+                        AbstractAutowireCapableBeanFactory -> AutoWiredAnnotationBeanPostProcessor: postProcessPropertyValues()
+                        activate AutoWiredAnnotationBeanPostProcessor
+                            AutoWiredAnnotationBeanPostProcessor -> InjectionMetadata: inject()
+                            activate InjectionMetadata
+                                InjectionMetadata -> AutoWiredAnnotationBeanPostProcessor: inject()
+                                activate AutoWiredAnnotationBeanPostProcessor
+                                    AutoWiredAnnotationBeanPostProcessor -> AutoWiredAnnotationBeanPostProcessor: resolveFiledValue()
+                                    activate AutoWiredAnnotationBeanPostProcessor
+                                        AutoWiredAnnotationBeanPostProcessor -> DefaultListableBeanFactory: resolveDependency()
+                                        activate DefaultListableBeanFactory
+                                            DefaultListableBeanFactory -> DefaultListableBeanFactory: doResolveDependency()
+                                            activate DefaultListableBeanFactory
+                                                DefaultListableBeanFactory -> DefaultListableBeanFactory: getBean()
+                                            deactivate DefaultListableBeanFactory
+                                            return object
+                                        deactivate DefaultListableBeanFactory
+                                    deactivate AutoWiredAnnotationBeanPostProcessor
+                                deactivate AutoWiredAnnotationBeanPostProcessor
+                            deactivate InjectionMetadata
+                        deactivate AutoWiredAnnotationBeanPostProcessor
+                    deactivate AbstractAutowireCapableBeanFactory
+                deactivate AbstractAutowireCapableBeanFactory
+            deactivate AbstractAutowireCapableBeanFactory
+          return sharedInstance
+        deactivate DefaultSingletonBeanRegistry
+    deactivate AbstractBeanFactory
+deactivate AbstractBeanFactory
+
+@enduml

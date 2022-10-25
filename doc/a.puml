@@ -1,33 +1,36 @@
 @startuml
-activate AbstractApplicationContext
-AbstractApplicationContext -> AbstractApplicationContext: finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory)
-AbstractApplicationContext -> DefaultListableBeanFactory: preInstantiateSingletons()
-activate DefaultListableBeanFactory
 
-    loop beanDefinitionNames
-        DefaultListableBeanFactory -> AbstractBeanFactory: getBean(String name)
-        activate AbstractBeanFactory
+DefaultListableBeanFactory -> AbstractBeanFactory: getBean(String name)
+activate AbstractBeanFactory
 
-            AbstractBeanFactory -> AbstractBeanFactory: doGetBean(String name)
-            activate AbstractBeanFactory
+    AbstractBeanFactory -> AbstractBeanFactory: doGetBean(String name)
+    activate AbstractBeanFactory
 
-            AbstractBeanFactory -> DefaultListableBeanFactory: getSingleton()
-            activate DefaultListableBeanFactory
-                DefaultListableBeanFactory -> AbstractAutowireCapableBeanFactory: createBean()
-                activate AbstractAutowireCapableBeanFactory
-                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: doCreateBean()
-                    activate AbstractAutowireCapableBeanFactory
-                        AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: createBeanInstance()
-                        AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: instantiateBean()
-                    deactivate AbstractAutowireCapableBeanFactory
-                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: populateBean()
-                    AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: initializeBean()
+    AbstractBeanFactory -> DefaultListableBeanFactory: getSingleton()
+    activate DefaultListableBeanFactory
+        DefaultListableBeanFactory -> AbstractAutowireCapableBeanFactory: createBean()
+        activate AbstractAutowireCapableBeanFactory
+            AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: doCreateBean()
+            activate AbstractAutowireCapableBeanFactory
+                AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: createBeanInstance()
+                AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: instantiateBean()
+            deactivate AbstractAutowireCapableBeanFactory
+            AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: populateBean()
+            AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: initializeBean()
 
+        DefaultListableBeanFactory -> AbstractBeanFactory: sharedInstance
+    deactivate DefaultListableBeanFactory
 
-                DefaultListableBeanFactory -> AbstractBeanFactory: sharedInstance
-            deactivate DefaultListableBeanFactory
+    AbstractBeanFactory -> AbstractBeanFactory: getObjectForBeanInstance
+deactivate AbstractBeanFactory
 
-            AbstractBeanFactory -> AbstractBeanFactory: getObjectForBeanInstance
-        deactivate AbstractBeanFactory
-    end
+AbstractAutowireCapableBeanFactory -> AutowiredAnnotationBeanPostProcessor: postProcessProperties()
+AutowiredAnnotationBeanPostProcessor -> AutowiredAnnotationBeanPostProcessor : inject()
+AutowiredAnnotationBeanPostProcessor -> AutowiredAnnotationBeanPostProcessor: resolveFieldValue()
+AutowiredAnnotationBeanPostProcessor -> DefaultListableBeanFactory: resolveDependency()
+DefaultListableBeanFactory -> DefaultListableBeanFactory: doResolveDependency()
+DefaultListableBeanFactory -> DefaultListableBeanFactory: DefaultListableBeanFactory()
+DefaultListableBeanFactory -> DependencyDescriptor: resolveCandidate()
+DependencyDescriptor -> DefaultListableBeanFactory: getBean()
+
 @enduml
