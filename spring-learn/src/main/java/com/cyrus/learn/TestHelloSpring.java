@@ -1,6 +1,7 @@
 package com.cyrus.learn;
 
 import com.cyrus.learn.service.AService;
+import com.cyrus.learn.service.BService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,14 +20,13 @@ public class TestHelloSpring {
 		context.register(TestHelloSpring.class);
 		context.refresh();
 
-		/*String[] beanDefinitionNames = context.getBeanDefinitionNames();
-		System.out.println("===================");
-		for (String beanDefinitionName : beanDefinitionNames) {
-			System.out.println(beanDefinitionName);
-		}*/
-
 		AService aService = context.getBean("AService", AService.class);
+		System.out.println(aService);
 		System.out.println(aService.getbService());
+
+		BService bService = context.getBean("BService", BService.class);
+		System.out.println(bService);
+		System.out.println(bService.getaService());
 
 	}
 }

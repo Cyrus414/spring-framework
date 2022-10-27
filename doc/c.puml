@@ -9,6 +9,8 @@ activate AbstractBeanFactory
             DefaultSingletonBeanRegistry -> AbstractAutowireCapableBeanFactory: createBean()
             activate AbstractAutowireCapableBeanFactory
                 AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: doCreateBean()
+                AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: createBeanInstance()
+                AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: addSingletonFactory()
                 activate AbstractAutowireCapableBeanFactory
                     AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: populateBean()
                     activate AbstractAutowireCapableBeanFactory
