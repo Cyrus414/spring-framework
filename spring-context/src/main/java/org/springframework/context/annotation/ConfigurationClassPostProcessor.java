@@ -78,6 +78,8 @@ import org.springframework.util.ClassUtils;
  * their corresponding bean definitions registered before any other
  * {@code BeanFactoryPostProcessor} executes.
  *
+ * 意思是@Confiuration配置类中使用@Bean定义的bean优先级比较高？？需要在其他BeanFactoryPostProcessor被定义好
+ *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @author Phillip Webb
